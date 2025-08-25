@@ -1,12 +1,12 @@
-# backend/app.py
 import os, time, uuid
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify, g, render_template
 from flask_cors import CORS
 from werkzeug.exceptions import RequestEntityTooLarge, NotFound, MethodNotAllowed
 from PyPDF2 import PdfReader
 from classifier import classificar_email
 
-app = Flask(__name__)
+# agora o Flask já sabe onde estão templates/ e static/
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
 # json acentuado sem \uXXXX
 app.config["JSON_AS_ASCII"] = False
@@ -44,10 +44,12 @@ def _pos(resp):
         resp.headers["X-Response-Time-ms"] = str(int((time.perf_counter() - g.t0) * 1000))
     return resp
 
-# rotas
+# ---------------- ROTAS ---------------- #
+
+# rota inicial -> frontend
 @app.get("/")
-def alive():
-    return "API OK. Use POST /classificar", 200
+def home():
+    return render_template("index.html")
 
 @app.get("/healthz")
 def health():
@@ -109,15 +111,21 @@ def classificar_arquivo():
     except Exception as e:
         return jerr(500, "Erro ao classificar", repr(e))
 
-# handlers globais pra respostas JSON bonitinhas
+# ---------------- HANDLERS DE ERRO ---------------- #
+
 @app.errorhandler(NotFound)
 def _404(e): return jerr(404, "Rota não encontrada")
+
 @app.errorhandler(MethodNotAllowed)
 def _405(e): return jerr(405, "Método não permitido")
+
 @app.errorhandler(RequestEntityTooLarge)
 def _413(e): return jerr(413, "Payload muito grande", f"Limite: {app.config['MAX_CONTENT_LENGTH']} bytes")
+
 @app.errorhandler(Exception)
 def _500(e): return jerr(500, "Erro interno", repr(e))
+
+# ---------------- MAIN ---------------- #
 
 if __name__ == "__main__":
     app.run(debug=True)
