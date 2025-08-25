@@ -13,7 +13,6 @@
       --primary: #2563eb;     /* blue-600 */
       --primary-2: #1e40af;   /* blue-800 */
       --success: #16a34a;     /* green-600 */
-      --warning: #f59e0b;     /* amber-500 */
       --danger: #ef4444;      /* red-500 */
       --pill-bg: #0b1220;     
       --shadow: 0 10px 30px rgba(0,0,0,.35);
@@ -32,11 +31,10 @@
 
     .wrap { max-width: 980px; margin: 40px auto; padding: 0 16px; }
 
-    header {
-      text-align: center; margin-bottom: 18px;
-    }
-    h1 { font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); margin: 0 0 6px; letter-spacing: .3px; }
-    .subtitle { color: var(--muted); font-size: .98rem; }
+    header.brand { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom: 18px; }
+    .logo { height: 40px; width: auto; border-radius: 8px; display:none; }
+    h1 { font-size: clamp(1.6rem, 1.2rem + 2vw, 2.3rem); margin: 0 0 6px; letter-spacing: .3px; }
+    .subtitle { color: var(--muted); font-size: .98rem; margin:0; }
 
     .card { background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
             border: 1px solid rgba(255,255,255,.08);
@@ -47,9 +45,7 @@
 
     .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 
-    @media (min-width: 860px) {
-      .grid { grid-template-columns: 1.1fr .9fr; }
-    }
+    @media (min-width: 860px) { .grid { grid-template-columns: 1.1fr .9fr; } }
 
     label { display: block; font-weight: 600; margin-bottom: 8px; }
 
@@ -74,13 +70,10 @@
 
     .meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: var(--muted); font-size: .9rem; }
 
-    .examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    .chip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); padding: 8px 10px; border-radius: 999px; font-size: .88rem; cursor: pointer; }
-    .chip:hover { background: rgba(255,255,255,.10); }
-
     .dropzone { position: relative; background: #0b1220; border: 1px dashed rgba(255,255,255,.18); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
     .dropzone input { display: none; }
     .dropzone .hint { color: var(--muted); font-size: .92rem; }
+    .file-name { color: #cbd5e1; font-size: .9rem; margin-left: 8px; }
 
     .output { display: grid; grid-template-columns: 1fr; gap: 14px; }
     .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--pill-bg); border: 1px solid rgba(255,255,255,.12); }
@@ -94,12 +87,9 @@
     .toast.show { opacity: 1; transform: translateY(0); }
 
     .small { font-size: .86rem; color: var(--muted); }
-
     .right { text-align: right; }
 
-    .inline-loader {
-      width: 14px; height: 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7); border-top-color: transparent; display: inline-block; vertical-align: -2px; animation: spin .7s linear infinite; margin-left: 8px;
-    }
+    .inline-loader { width: 14px; height: 14px; border-radius: 999px; border: 2px solid rgba(255,255,255,.7); border-top-color: transparent; display: inline-block; vertical-align: -2px; animation: spin .7s linear infinite; margin-left: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     footer { margin: 22px 0 30px; text-align: center; color: var(--muted); font-size: .85rem; }
@@ -107,16 +97,19 @@
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <h1>Classificador de E‑mails</h1>
-      <p class="subtitle">Cole um texto, use um exemplo com 1 clique ou envie um arquivo .txt/.pdf para classificar e receber uma resposta sugerida.</p>
+    <header class="brand">
+      <img id="logo" class="logo" alt="Logo" />
+      <div>
+        <h1>Classificador de E‑mails</h1>
+        <p class="subtitle">Analise mensagens, categorize e gere respostas em segundos.</p>
+      </div>
     </header>
 
     <div class="grid">
       <!-- Entrada -->
       <section class="card">
-        <label for="texto">Texto do e‑mail</label>
-        <textarea id="texto" placeholder="Digite o texto do e‑mail aqui…"></textarea>
+        <label for="texto">Conteúdo do e‑mail</label>
+        <textarea id="texto" placeholder="Insira o texto do e‑mail aqui…"></textarea>
         <div class="meta">
           <div class="row">
             <button id="btnLimpar" class="btn ghost" type="button" title="Limpar texto">Limpar</button>
@@ -125,19 +118,13 @@
           <div id="contador" class="small">0 caracteres</div>
         </div>
 
-        <div class="examples" aria-label="Exemplos">
-          <div class="chip" data-fill="Olá, poderia me informar o status do chamado #12345? Preciso saber se já foi encaminhado ao time responsável.">Status de chamado</div>
-          <div class="chip" data-fill="Feliz Natal a todos! Só passando pra desejar boas festas :) ">Mensagem de felicitações</div>
-          <div class="chip" data-fill="Segue em anexo o relatório mensal da equipe de infraestrutura referente a julho. Qualquer dúvida fico à disposição.">Envio de arquivo</div>
-          <div class="chip" data-fill="Não estou conseguindo acessar o sistema desde ontem. Aparece erro 500 após o login. Podem verificar?">Incidente técnico</div>
-        </div>
-
         <div style="height: 10px"></div>
 
         <div class="dropzone" id="dropzone">
           <div class="row" style="gap:12px; align-items:center;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 16.5v.75A2.75 2.75 0 0 1 17.25 20H6.75A2.75 2.75 0 0 1 4 17.25V16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            <span class="hint">Arraste um arquivo <strong>.txt</strong> ou <strong>.pdf</strong> aqui, ou</span>
+            <span class="hint">Envie um arquivo <strong>.txt</strong> ou <strong>.pdf</strong> (arraste e solte ou use o botão ao lado)</span>
+            <span id="fileName" class="file-name"></span>
           </div>
           <div class="row right" style="flex:1; justify-content:flex-end;">
             <input id="arquivo" type="file" accept=".txt,.pdf" />
@@ -179,6 +166,9 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
+    // ======= Configuração rápida da logo =======
+    const LOGO_URL = 'logo.svg';
+
     const el = (id) => document.getElementById(id);
     const texto = el('texto');
     const contador = el('contador');
@@ -187,12 +177,16 @@
     const btnCopiar = el('btnCopiar');
     const btnClassificarArquivo = el('btnClassificarArquivo');
     const inputArquivo = el('arquivo');
+    const fileName = el('fileName');
     const categoria = el('categoria');
     const categoriaPill = el('categoriaPill');
     const resposta = el('resposta');
     const conf = el('conf');
     const toast = el('toast');
     const dropzone = el('dropzone');
+    const logo = el('logo');
+
+    if (LOGO_URL) { logo.src = LOGO_URL; logo.style.display = 'block'; }
 
     // Utilidades
     function showToast(msg) {
@@ -221,15 +215,6 @@
     texto.addEventListener('input', updateCounter);
     updateCounter();
 
-    // Chips de exemplo
-    document.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        texto.value = chip.dataset.fill || '';
-        texto.focus();
-        updateCounter();
-      });
-    });
-
     // Limpar
     btnLimpar.addEventListener('click', () => {
       texto.value = '';
@@ -249,18 +234,33 @@
       catch(e) { showToast('Não foi possível copiar'); }
     });
 
+    // Atualiza UI com nome do arquivo
+    function updateFileUI(file) {
+      if (file) {
+        const sizeKB = (file.size / 1024).toFixed(1);
+        fileName.textContent = `${file.name} (${sizeKB} KB)`;
+      } else {
+        fileName.textContent = '';
+      }
+    }
+
     // Drag & drop
     ;['dragenter','dragover'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.style.borderColor = 'rgba(99,102,241,.6)'; }));
     ;['dragleave','drop'].forEach(evt => dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.style.borderColor = 'rgba(255,255,255,.18)'; }));
     dropzone.addEventListener('drop', (e) => {
       const file = e.dataTransfer.files?.[0];
-      if (file) { inputArquivo.files = e.dataTransfer.files; }
+      if (file) { inputArquivo.files = e.dataTransfer.files; updateFileUI(file); }
+    });
+
+    inputArquivo.addEventListener('change', () => {
+      const f = inputArquivo.files?.[0];
+      updateFileUI(f);
     });
 
     // Classificar Texto
     btnClassificar.addEventListener('click', async () => {
       const txt = texto.value.trim();
-      if (!txt) { showToast('Digite ou selecione um exemplo'); return; }
+      if (!txt) { showToast('Digite o texto do e‑mail'); return; }
       setLoading(btnClassificar, true);
       try {
         const res = await fetch('/classificar', {
@@ -297,7 +297,6 @@
 
     // Interpretação flexível do payload para evitar quebras
     function handleResult(data) {
-      // Aceita chaves alternativas que possam vir do backend
       const categoriaRaw = data.categoria || data.category || data.label || '—';
       const respostaRaw = data.resposta || data.resposta_sugerida || data.reply || data.answer || '—';
       const confVal = data.confianca || data.confidence || data.score;
@@ -305,7 +304,6 @@
       categoria.textContent = categoriaRaw;
       resposta.textContent = String(respostaRaw).trim() || '—';
 
-      // Pílula de cor
       const lower = String(categoriaRaw).toLowerCase();
       categoriaPill.classList.remove('prod','improd');
       if (lower.includes('produt')) {
@@ -318,7 +316,6 @@
         categoriaPill.querySelector('.dot').style.background = '#64748b';
       }
 
-      // Confiança (opcional)
       if (typeof confVal === 'number') {
         const pct = Math.round(confVal * 100);
         conf.textContent = `Confiança: ${pct}%`;
