@@ -1,0 +1,7 @@
+# Dependências Python
+flask
+flask-cors
+python-dotenv
+openai
+PyPDF2
+gunicorn

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Classificador de E-mails</title>
+  <link rel="stylesheet" href="./static/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    @media (max-width: 600px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .row {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="hero-title">Classificador de E-mails</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <label for="email-texto" class="label">Texto do e-mail</label>
+      <textarea id="email-texto" class="textarea" placeholder="Digite o texto do e-mail aqui..."></textarea>
+
+      <div class="row between">
+        <span class="muted small" id="char-count">0 caracteres</span>
+        <div class="row gap8">
+          <button class="btn btn-primary" id="botao-processar">Classificar</button>
+        </div>
+      </div>
+
+      <div class="helper">
+        <button class="link" id="toggle-upload">Enviar arquivo (.txt/.pdf)</button>
+      </div>
+      <div id="upload-wrap" class="upload hidden">
+        <input type="file" id="arquivo" accept=".txt,.pdf" />
+        <button class="btn ghost" id="botao-arquivo">Classificar Arquivo</button>
+        <span class="muted small">Usa a rota <code>/classificar-arquivo</code>.</span>
+      </div>
+
+      <div id="msg-erro" class="alert hidden"></div>
+    </section>
+
+    <section class="card result">
+      <div class="result-grid">
+        <div>
+          <div class="label muted">Categoria</div>
+          <div class="badge" id="categoria">—</div>
+          <div class="muted xsmall" id="origem">(origem: —)</div>
+        </div>
+        <div>
+          <div class="label muted">Resposta sugerida</div>
+          <div id="resposta" class="answer">—</div>
+          <div class="row gap8">
+            <button class="btn ghost" id="btn-copiar">Copiar</button>
+            <span id="copy-ok" class="muted xsmall hidden">Copiada ✅</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="muted small">© 2025 Classificador de E-mails. Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="./static/scripts.js"></script>
+</body>
+</html>
