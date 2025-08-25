@@ -23,8 +23,6 @@ Este projeto foi desenvolvido como um **MVP prático** para demonstrar como a IA
 🔗 Acesse a aplicação em:  
 👉 [**email-classifier-app (Render)**](https://email-classifier-app-0knt.onrender.com)
 
-<img src="docs/demo.png" alt="Demonstração" width="700"/>
-
 ---
 
 ## 🛠️ Tecnologias Utilizadas
