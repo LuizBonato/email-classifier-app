@@ -3,6 +3,8 @@ from flask import Flask, request, jsonify, g, render_template
 from flask_cors import CORS
 from werkzeug.exceptions import RequestEntityTooLarge, NotFound, MethodNotAllowed
 from PyPDF2 import PdfReader
+import sys, os
+sys.path.append(os.path.dirname(__file__))
 from classifier import classificar_email
 
 # agora o Flask já sabe onde estão templates/ e static/
